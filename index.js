@@ -2,12 +2,17 @@ import express from "express";
 import { config } from "dotenv";
 config();
 import cors from "cors";
-import connectDB from "./config/db.js";
+import mongoose from "mongoose";
 import videoRoutes from "./routes/videos.js";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+mongoose
+ .connect(process.env.MONGODB_URI)
+ .then(() => console.log("MongoDB Connected"))
+ .catch((err) => console.log(err));
 
 app.get("/", (req, res) => {
  res.json("Hello World!");
@@ -16,11 +21,6 @@ app.get("/", (req, res) => {
 app.use("/api/videos", videoRoutes);
 
 const port = process.env.PORT || 3030;
-app.listen(port, async () => {
- try {
-  await connectDB();
-  console.log(`Server is running on port ${port}`);
- } catch (error) {
-  console.log(error);
- }
+app.listen(port, () => {
+ console.log(`Server is running on port ${port}`);
 });

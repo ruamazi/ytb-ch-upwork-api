@@ -6,7 +6,7 @@ const router = express.Router();
 // Get paginated videos
 router.get("/", async (req, res) => {
  const page = parseInt(req.query.page) || 1;
- const limit = 6; // number per page
+ const limit = parseInt(req.query.limit) || 8; // number per page
  const skip = (page - 1) * limit;
 
  const [videos, total] = await Promise.all([
