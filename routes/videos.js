@@ -8,12 +8,10 @@ router.get("/", async (req, res) => {
  const page = parseInt(req.query.page) || 1;
  const limit = parseInt(req.query.limit) || 8; // number per page
  const skip = (page - 1) * limit;
-
  const [videos, total] = await Promise.all([
   Video.find().skip(skip).limit(limit),
   Video.countDocuments(),
  ]);
-
  res.json({ videos, total, page, pages: Math.ceil(total / limit) });
 });
 
